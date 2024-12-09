@@ -15,9 +15,9 @@ MonoBehaviour:
   _Id: apple
   _Name: Apple
   _Description: Apple is a fruit as well as a tech company.
-  _Icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _ItemType: 2
-  _Rarity: 0
+  _Icon: {fileID: 21300000, guid: 887d9c62240c4134b9bc051c75ab9a02, type: 3}
+  _ItemType: 0
+  _Rarity: 1
   _Weight: 2
   _Price: 15
   _SellingPrice: 10

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3da6b3e841908a14fad4172ca964a1b6, type: 3}
-  m_Name: orange
+  m_Name: pineapple
   m_EditorClassIdentifier: 
-  _Id: orange
-  _Name: Orange
-  _Description: Also a juicy citrusy fruit.
-  _Icon: {fileID: 21300000, guid: f5f51849d77a93e4b86073e1287f4b8f, type: 3}
-  _ItemType: 3
-  _Rarity: 2
-  _Weight: 4
-  _Price: 30
-  _SellingPrice: 20
+  _Id: pineapple
+  _Name: Pineapple
+  _Description: Big sized, spikey and juicy fruit.
+  _Icon: {fileID: 21300000, guid: e7163abef081bfb43a69cb69856b0ca5, type: 3}
+  _ItemType: 2
+  _Rarity: 4
+  _Weight: 25
+  _Price: 100
+  _SellingPrice: 100
