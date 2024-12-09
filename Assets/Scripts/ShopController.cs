@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ShopController
@@ -25,6 +26,22 @@ public class ShopController
         return _Model.AllItems;
     }
 
+    public Dictionary<string, ItemEntry> GetItemsToDisplay()
+    {
+        if (_Model._Filter <= 0 || _Model._Filter > 4)
+        {
+            _Model._Filter = 0;
+            return _Model.AllItems;
+        }
+        else
+        {
+            var filteredItems = _Model.AllItems.Values
+                    .Where(item => item._ItemType == (ItemType)_Model._Filter)
+                        .ToDictionary(item => item._Id, item => item);
+            return filteredItems;
+        }
+    }
+
     public void OnItemSelected(string id) { 
     
     }
@@ -47,6 +64,7 @@ public class ShopModel
     [SerializeField] private Dictionary<string, ItemEntry> _AllItems;
     public Dictionary<string, ItemEntry> AllItems => _AllItems;
     private ShopController _Controller;
+    public int _Filter = 0; //0: all, 1: materials, 2: weapons, 3: consumables, 4: trasures
 
     public ShopModel()
     {

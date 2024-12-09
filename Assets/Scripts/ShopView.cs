@@ -16,8 +16,8 @@ public class ShopView : MonoBehaviour
 
     public void Populate()
     {
-        var allItems = _Controller.GetAllItemsEntry();
-        foreach (var item in allItems)
+        var itemsToDisplay = _Controller.GetItemsToDisplay();
+        foreach (var item in itemsToDisplay)
         {
             GameObject newItemGO = Instantiate(_ItemUIPrefab, _ShopContents);
             ItemView newItem = newItemGO.GetComponent<ItemView>();
