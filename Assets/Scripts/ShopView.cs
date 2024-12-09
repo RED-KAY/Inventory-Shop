@@ -46,7 +46,7 @@ public class ShopView : MonoBehaviour
 
     public void OnItemSelected(ItemEntry item)
     {
-        _ItemPopup?.Show(item._Name, item._Price);
+        _ItemPopup?.Show(item._Id, item._Name, item._Price);
     }
 
     public void ChangeFilter(int filter)

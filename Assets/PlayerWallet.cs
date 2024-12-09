@@ -43,5 +43,10 @@ public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
         
         return false;
     }
+
+    private void Update()
+    {
+        _BalanceT.text = _Balance.ToString();
+    }
 }
 

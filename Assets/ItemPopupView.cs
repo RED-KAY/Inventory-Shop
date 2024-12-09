@@ -12,6 +12,7 @@ public class ItemPopupView : MonoBehaviour
 
     public int _Mode;
 
+    string _Id;
     string _ItemName;
     int _PriceOfOne;
     int _Quantity;
@@ -19,7 +20,19 @@ public class ItemPopupView : MonoBehaviour
 
     public void Yes()
     {
+        if (_Mode == 2)
+        {
+            //Sell
+        }
+        else
+        {
+            //Buy
 
+            if (PlayerWallet.Instance.TryTransaction(_TotalPrice))
+            {
+                Debug.Log(_ItemName + " Bought!");
+            }
+        }
     }
 
     public void Cancel()
@@ -50,8 +63,9 @@ public class ItemPopupView : MonoBehaviour
         Refresh();
     }
 
-    public void Show(string itemName, int priceOfOne, int quantity = 1, int mode = 1)
+    public void Show(string id, string itemName, int priceOfOne, int quantity = 1, int mode = 1)
     {
+        _Id = id;
         _ItemName = itemName;
         _PriceOfOne = priceOfOne;
         _Quantity = quantity;
