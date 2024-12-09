@@ -55,6 +55,12 @@ public class ShopController
     {
         _View.Refresh();
     }
+
+    internal void FilterChanged(int filter)
+    {
+        _Model._Filter = filter;
+        PopulateShop();
+    }
 }
 
 

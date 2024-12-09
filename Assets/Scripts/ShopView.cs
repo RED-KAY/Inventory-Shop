@@ -6,6 +6,7 @@ public class ShopView : MonoBehaviour
 {
     [SerializeField] private GameObject _ItemUIPrefab;
     [SerializeField] private Transform _ShopContents;
+    [SerializeField] private ItemPopupView _ItemPopup;
 
     private ShopController _Controller;
 
@@ -21,7 +22,7 @@ public class ShopView : MonoBehaviour
         {
             GameObject newItemGO = Instantiate(_ItemUIPrefab, _ShopContents);
             ItemView newItem = newItemGO.GetComponent<ItemView>();
-            newItem._Button.onClick.AddListener(() => OnItemSelected());
+            newItem._Button.onClick.AddListener(() => OnItemSelected(item.Value));
             newItem._Icon.sprite = item.Value._Icon;
             newItem._Quantity.text = string.Empty;
             newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value._Rarity)];
@@ -43,8 +44,13 @@ public class ShopView : MonoBehaviour
         Populate();
     }
 
-    public void OnItemSelected()
+    public void OnItemSelected(ItemEntry item)
     {
+        _ItemPopup?.Show(item._Name, item._Price);
+    }
 
+    public void ChangeFilter(int filter)
+    {
+        _Controller.FilterChanged(filter);
     }
 }
