@@ -24,7 +24,7 @@ public class ShopView : MonoBehaviour
             ItemView newItem = newItemGO.GetComponent<ItemView>();
             newItem._Button.onClick.AddListener(() => OnItemSelected(item.Value));
             newItem._Icon.sprite = item.Value._Icon;
-            newItem._Quantity.text = string.Empty;
+            newItem._Quantity.text = "$" + item.Value._Price.ToString();
             newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value._Rarity)];
         }
 

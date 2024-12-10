@@ -16,8 +16,6 @@ public class ShopController
         _Model.SetController(this);
         _View.SetController(this);
 
-        _Model.LoadAllItems();
-
         PopulateShop();
     }
 
@@ -72,9 +70,10 @@ public class ShopModel
     private ShopController _Controller;
     public int _Filter = 0; //0: all, 1: materials, 2: weapons, 3: consumables, 4: trasures
 
-    public ShopModel()
+    public ShopModel(Dictionary<string, ItemEntry> allItems)
     {
         _AllItems = new Dictionary<string, ItemEntry>();
+        _AllItems = allItems;
     }
 
     public void SetController(ShopController controller)
@@ -82,16 +81,4 @@ public class ShopModel
         _Controller = controller;
     }
 
-    public void LoadAllItems()
-    {
-        ItemEntry[] allItems = Resources.LoadAll<ItemEntry>("Items");
-
-        foreach (ItemEntry item in allItems) { 
-            _AllItems.Add(item._Id, item);
-        }
-
-        foreach (KeyValuePair<string, ItemEntry> keyValuePair in _AllItems) {
-            Debug.Log(keyValuePair.Key);
-        }
-    }
 }

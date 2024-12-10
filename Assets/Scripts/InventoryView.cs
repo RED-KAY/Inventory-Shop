@@ -22,7 +22,7 @@ public class InventoryView : MonoBehaviour
             ItemView newItem = newItemGO.GetComponent<ItemView>();
             newItem._Button.onClick.AddListener(() => OnItemSelected(item.Value));
             newItem._Icon.sprite = item.Value.Details._Icon;
-            newItem._Quantity.text = string.Empty;
+            newItem._Quantity.text = item.Value._Amount.ToString();
             newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value.Details._Rarity)];
         }
 
@@ -44,7 +44,7 @@ public class InventoryView : MonoBehaviour
 
     public void OnItemSelected(Item item)
     {
-        _ItemPopup?.Show(item.Details._Id, item.Details._Name, item.Details._Price);
+        _ItemPopup?.Show(item.Details._Id, item.Details._Name, item.Details._SellingPrice, item._Amount, 2);
     }
 
     public void ChangeFilter(int filter)

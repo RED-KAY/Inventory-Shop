@@ -15,7 +15,7 @@ public class ItemPopupView : MonoBehaviour
     string _Id;
     string _ItemName;
     int _PriceOfOne;
-    int _Quantity;
+    int _Quantity, _MaxQuantity;
     int _TotalPrice;
 
     public void Yes()
@@ -23,6 +23,11 @@ public class ItemPopupView : MonoBehaviour
         if (_Mode == 2)
         {
             //Sell
+            if (GameController.Instance.CanSell(_Id, _Quantity)) {
+                Debug.Log(_Quantity + " " + _ItemName + "(s) Sold!");
+                EventService.Instance._OnItemSold?.InvokeEvent(_Id, _Quantity);
+            }
+
         }
         else
         {
@@ -30,9 +35,12 @@ public class ItemPopupView : MonoBehaviour
 
             if (PlayerWallet.Instance.TryTransaction(_TotalPrice))
             {
-                Debug.Log(_ItemName + " Bought!");
+                Debug.Log(_Quantity + " " + _ItemName + "(s) Bought!");
+                EventService.Instance._OnItemBought?.InvokeEvent(_Id, _Quantity);
             }
         }
+
+        Hide();
     }
 
     public void Cancel()
@@ -44,9 +52,9 @@ public class ItemPopupView : MonoBehaviour
     {
         _Quantity++;
 
-        if(_Quantity > 100)
+        if(_Quantity > _MaxQuantity)
         {
-            _Quantity = 100;
+            _Quantity = _MaxQuantity;
         }
 
         Refresh();
@@ -69,6 +77,15 @@ public class ItemPopupView : MonoBehaviour
         _ItemName = itemName;
         _PriceOfOne = priceOfOne;
         _Quantity = quantity;
+
+        if (_Mode == 2) {
+            _MaxQuantity = quantity;
+        }
+        else
+        {
+            _MaxQuantity = 100;
+        }
+        
         _TotalPrice = _PriceOfOne * _Quantity;
         _Mode = mode;
 

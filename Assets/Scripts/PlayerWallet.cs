@@ -12,6 +12,8 @@ public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
     private void Start()
     {
         _Balance = 300;
+
+        EventService.Instance._OnItemSoldAddMoney.AddListener(AddMoney);
     }
 
     public void AddMoney(int amount)
@@ -26,6 +28,11 @@ public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
         if (Balance < 0) {
             _Balance = 0;
         }
+    }
+
+    private void OnItemSold(string id, int amount)
+    {
+
     }
 
     public bool TryTransaction(int requiredAmount)
