@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryController : MonoBehaviour
+public class InventoryController
 {
     InventoryModel _Model;
     InventoryView _View;
@@ -12,11 +12,12 @@ public class InventoryController : MonoBehaviour
     {
         _Model = m;
         _View = v;
+    }
 
+    public void Initialize()
+    {
         _Model.SetController(this);
         _View.SetController(this);
-
-        //_Model.LoadAllItems();
 
         PopulateShop();
 

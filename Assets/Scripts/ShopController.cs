@@ -13,6 +13,11 @@ public class ShopController
         _Model = m;
         _View = v;
 
+
+    }
+
+    public void Initialize()
+    {
         _Model.SetController(this);
         _View.SetController(this);
 

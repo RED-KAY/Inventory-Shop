@@ -1,12 +1,31 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class InventoryView : MonoBehaviour
 {
     [SerializeField] private GameObject _ItemUIPrefab;
     [SerializeField] private Transform _InventoryContents;
     [SerializeField] private ItemPopupView _ItemPopup;
+    [SerializeField] Toggle[] _Toggles;
+    [SerializeField] Color _DefaultColor;
+    [SerializeField] Color _ActiveColor;
 
     private InventoryController _Controller;
+    int _CurrentActive;
+
+    private void Start()
+    {
+        foreach (var item in _Toggles)
+        {
+            item.targetGraphic.color = _DefaultColor;
+        }
+
+        _Toggles[0].targetGraphic.color = _ActiveColor;
+    }
+
+
 
     public void SetController(InventoryController controller)
     {
@@ -24,6 +43,7 @@ public class InventoryView : MonoBehaviour
             newItem._Icon.sprite = item.Value.Details._Icon;
             newItem._Quantity.text = item.Value._Amount.ToString();
             newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value.Details._Rarity)];
+            newItem.SetItem(item.Value.Details, item.Value._Amount, false);
         }
 
     }
@@ -49,6 +69,13 @@ public class InventoryView : MonoBehaviour
 
     public void ChangeFilter(int filter)
     {
+        if (_Controller == null) return;
+
         _Controller.FilterChanged(filter);
+
+        _Toggles[_CurrentActive].targetGraphic.color = _DefaultColor;
+        _Toggles[filter].targetGraphic.color = _ActiveColor;
+
+        _CurrentActive = filter;
     }
 }
