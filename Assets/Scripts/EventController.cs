@@ -24,3 +24,17 @@ public class EventController
     public void RemoveListener(Action listener) => baseEvent -= listener;
 
 }
+
+public class EventControllerFunc<T1, T2>
+{
+    public event Func<T1, T2> func2; 
+
+    public T2 Invoke(T1 t1)
+    {
+        return func2.Invoke(t1);
+    }
+
+    public void AddListener(Func<T1, T2> listener) => func2 += listener;
+    public void RemoveListener(Func<T1, T2> listener) => func2 -= listener;
+
+}

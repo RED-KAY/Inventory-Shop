@@ -37,6 +37,15 @@ public class ItemPopupView : MonoBehaviour
             {
                 Debug.Log(_Quantity + " " + _ItemName + "(s) Bought!");
                 EventService.Instance._OnItemBought?.InvokeEvent(_Id, _Quantity);
+                ItemsAddInfo[] itemsToAdd = new ItemsAddInfo[1];
+                itemsToAdd[0]._Id = _Id;
+                itemsToAdd[0]._Quantity = _Quantity;
+                ItemsAddInfoResult[] result = EventService.Instance._TryAddItems?.Invoke(itemsToAdd);
+
+                if (result != null)
+                {
+                
+                }
             }
         }
 

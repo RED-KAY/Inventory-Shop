@@ -12,6 +12,9 @@ public class GameController : GenericMonoSingleton<GameController>
     public Sprite[] _Rarities;
 
     Dictionary<string, ItemEntry> _AllItems;
+    List<ItemEntry> _ItemsList;
+
+    public List<ItemEntry> ItemsList {  get { return _ItemsList; } }
 
     public Dictionary<string, ItemEntry> AllItems { get { return _AllItems; } }
 
@@ -20,6 +23,8 @@ public class GameController : GenericMonoSingleton<GameController>
 
     private TooltipView _TooltipView;
     public TooltipView TooltipView { get { return _TooltipView; } }
+
+    [SerializeField] int _MaxWeight;
 
     private void Awake()
     {
@@ -36,18 +41,24 @@ public class GameController : GenericMonoSingleton<GameController>
 
         _ShopController.Initialize();
         _InventoryController.Initialize();
+
+        RandomDropSystem.Instance.Initiliaze();
     }
 
     public void LoadAllItems()
     {
         _AllItems = new Dictionary<string, ItemEntry>();
+        _ItemsList = new List<ItemEntry>();
 
         ItemEntry[] allItems = Resources.LoadAll<ItemEntry>("Items");
 
         foreach (ItemEntry item in allItems)
         {
             _AllItems.Add(item._Id, item);
+            _ItemsList.Add(item);
         }
+
+        _ItemsList.Sort();
 
         foreach (KeyValuePair<string, ItemEntry> keyValuePair in _AllItems)
         {
@@ -81,5 +92,7 @@ public class GameController : GenericMonoSingleton<GameController>
     {
         return _InventoryController.CanSell(id, quantity);
     }
+
+    
 
 }

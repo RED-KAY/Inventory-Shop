@@ -17,11 +17,15 @@ public class EventService
 
     public EventController<int> _OnItemSoldAddMoney { get; private set; }
 
+    public EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]> _TryAddItems { get; private set; }
+
     public EventService()
     {
         _OnItemBought = new EventController<string, int>();
         _OnItemSold = new EventController<string, int>();
 
         _OnItemSoldAddMoney = new EventController<int>();
+
+        _TryAddItems = new EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]>();
     }
 }

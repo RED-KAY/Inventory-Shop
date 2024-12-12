@@ -21,8 +21,9 @@ public class InventoryController
 
         PopulateShop();
 
-        EventService.Instance._OnItemBought.AddListener(OnItemBought);
+        EventService.Instance._OnItemBought.AddListener(OnItemsBought);
         EventService.Instance._OnItemSold.AddListener(OnItemSold);
+        EventService.Instance._TryAddItems.AddListener(TryAddItems);
     }
 
     public Dictionary<string, Item> GetAllItems()
@@ -56,7 +57,7 @@ public class InventoryController
 
     }
 
-    private void OnItemBought(string id, int quantity)
+    private void OnItemsBought(string id, int quantity)
     {
         _Model.AddItem(id, quantity);
         Refresh();
@@ -73,6 +74,11 @@ public class InventoryController
     public void Buy(string id, int amount)
     {
 
+    }
+
+    ItemsAddInfoResult[] TryAddItems(ItemsAddInfo[] _itemsToAdd)
+    {
+        return _Model.TryAddItems(_itemsToAdd);
     }
 
     public void PopulateShop()
@@ -105,6 +111,10 @@ public class InventoryModel
     public Dictionary<string, Item> Items { get { return _Items; } }
     private InventoryController _Controller;
     public int _Filter = 0; //0: all, 1: materials, 2: weapons, 3: consumables, 4: trasures
+    private int _MaxWeight;
+    public int MaxWeight { get { return _MaxWeight; } }
+
+    private int _WeightAccumulation = 0;
 
     public InventoryModel(Dictionary<string, ItemEntry> allItems)
     {
@@ -145,4 +155,43 @@ public class InventoryModel
             _Items[id]._Amount = newAmount;
         }
     }
+
+    public ItemsAddInfoResult[] TryAddItems(ItemsAddInfo[] itemsToAdd)
+    {
+        List<ItemEntry> items = new List<ItemEntry>();
+        foreach (var item in itemsToAdd)
+        {
+            items.Add(Items[item._Id].Details);
+        }
+
+        items.Sort((a, b) =>
+        {
+            if(a._Weight < b._Weight) return -1;
+            else if(a._Weight > b._Weight) return 1;
+            return 0;
+        });
+
+        foreach (var item in items)
+        {
+            Debug.Log(item._Weight);
+        }
+
+        return null;
+    }
+}
+
+[Serializable]
+public struct ItemsAddInfo
+{
+    public string _Id;
+    public int _Quantity;
+}
+
+[Serializable]
+public struct ItemsAddInfoResult
+{
+    public string _Id;
+    public int _Quantity;
+    public int _ItemsAdded;
+    public bool Success { get { return _Quantity == _ItemsAdded; } }
 }
