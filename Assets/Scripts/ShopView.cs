@@ -29,11 +29,18 @@ public class ShopView : MonoBehaviour
     public void SetController(ShopController controller)
     {
         _Controller = controller;
+
+        EventService.Instance._OnItemsAddedToInventory.AddListener(Refresh);
+        EventService.Instance._OnItemsRemovedToInventory.AddListener(Refresh);
     }
 
     public void Populate()
     {
         var itemsToDisplay = _Controller.GetItemsToDisplay();
+        int maxWeight = GameController.Instance.GetMaxWeight();
+        int weightAccumulation = GameController.Instance.GetWeightAccumulation();
+        int delta = maxWeight - weightAccumulation;
+
         foreach (var item in itemsToDisplay)
         {
             GameObject newItemGO = Instantiate(_ItemUIPrefab, _ShopContents);
@@ -43,6 +50,10 @@ public class ShopView : MonoBehaviour
             newItem._Quantity.text = "$" + item.Value._Price.ToString();
             newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value._Rarity)];
             newItem.SetItem(item.Value, item.Value._Price, true);
+
+            if (delta < item.Value._Weight) { 
+                newItem.Disable();
+            }
         }
 
     }
@@ -75,5 +86,11 @@ public class ShopView : MonoBehaviour
         _Toggles[filter].targetGraphic.color = _ActiveColor;
 
         _CurrentActive = filter;
+    }
+
+    private void OnDisable()
+    {
+        EventService.Instance._OnItemsAddedToInventory.RemoveListener(Refresh);
+        EventService.Instance._OnItemsRemovedToInventory.RemoveListener(Refresh);
     }
 }

@@ -14,6 +14,15 @@ public class InventoryController
         _View = v;
     }
 
+    ~InventoryController()
+    {
+        EventService.Instance._OnItemBought.RemoveListener(OnItemsBought);
+        EventService.Instance._OnItemSold.RemoveListener(OnItemSold);
+        EventService.Instance._TryAddItems.RemoveListener(TryAddItems);
+        EventService.Instance._OnItemsAddedToInventory.RemoveListener(Refresh);
+        EventService.Instance._OnItemsRemovedToInventory.RemoveListener(Refresh);
+    }
+
     public void Initialize()
     {
         _Model.SetController(this);
@@ -24,6 +33,8 @@ public class InventoryController
         EventService.Instance._OnItemBought.AddListener(OnItemsBought);
         EventService.Instance._OnItemSold.AddListener(OnItemSold);
         EventService.Instance._TryAddItems.AddListener(TryAddItems);
+        EventService.Instance._OnItemsAddedToInventory.AddListener(Refresh);
+        EventService.Instance._OnItemsRemovedToInventory.AddListener(Refresh);
     }
 
     public Dictionary<string, Item> GetAllItems()
@@ -59,7 +70,12 @@ public class InventoryController
 
     private void OnItemsBought(string id, int quantity)
     {
-        _Model.AddItem(id, quantity);
+        ItemsAddInfo[] itemsAddInfos = new ItemsAddInfo[1];
+        itemsAddInfos[0]._Id = id;
+        itemsAddInfos[0]._Quantity = quantity;
+        _Model.TryAddItems(itemsAddInfos);
+        //_Model.AddItem(id, quantity);
+
         Refresh();
     }
 
@@ -102,6 +118,16 @@ public class InventoryController
     {
         return _Model.Items[id]._Amount >= quantity;
     }
+
+    public int MaxWeight()
+    {
+        return _Model.MaxWeight;
+    }
+
+    public int WeightAccumulation()
+    {
+        return _Model.WeightAccumulation;
+    }
 }
 
 [Serializable]
@@ -115,14 +141,17 @@ public class InventoryModel
     public int MaxWeight { get { return _MaxWeight; } }
 
     private int _WeightAccumulation = 0;
+    public int WeightAccumulation { get { return _WeightAccumulation; } }
 
-    public InventoryModel(Dictionary<string, ItemEntry> allItems)
+    public InventoryModel(Dictionary<string, ItemEntry> allItems, int maxWeight)
     {
         _Items = new Dictionary<string, Item>();
         foreach (var item in allItems) {
             Item i = new Item(item.Value, 0);
             _Items.Add(item.Key, i);
         }
+
+        _MaxWeight = maxWeight;
     }
 
     public void SetController(InventoryController controller)
@@ -143,6 +172,8 @@ public class InventoryModel
             Item i = new Item(GameController.Instance.AllItems[id], quantity);
             _Items.Add(id, i);
         }
+
+        EventService.Instance._OnItemsAddedToInventory?.InvokeEvent();
     }
 
     public void RemoveItem(string id, int quantity) {
@@ -153,31 +184,69 @@ public class InventoryModel
             if (newAmount <= 0)
                 newAmount = 0;
             _Items[id]._Amount = newAmount;
+
+            _WeightAccumulation -= (int)_Items[id].Details._Weight * quantity;
+
+            EventService.Instance._OnItemsRemovedToInventory?.InvokeEvent();
         }
     }
 
     public ItemsAddInfoResult[] TryAddItems(ItemsAddInfo[] itemsToAdd)
     {
-        List<ItemEntry> items = new List<ItemEntry>();
+        List<Item> items = new List<Item>();
+        Dictionary<ItemEntry, int> items2 = new Dictionary<ItemEntry, int>();
         foreach (var item in itemsToAdd)
         {
-            items.Add(Items[item._Id].Details);
+            Item i = new Item(Items[item._Id].Details, item._Quantity);
+            items.Add(i);
+            //items2.Add(Items[item._Id].Details, item._Quantity);
         }
 
         items.Sort((a, b) =>
         {
-            if(a._Weight < b._Weight) return -1;
-            else if(a._Weight > b._Weight) return 1;
+            if((a.Details._Weight * a._Amount) < (b.Details._Weight * b._Amount)) return -1;
+            else if((a.Details._Weight * a._Amount) > (b.Details._Weight * b._Amount)) return 1;
             return 0;
         });
 
+        ItemsAddInfoResult[] results = new ItemsAddInfoResult[items.Count];
+        int index = 0;
         foreach (var item in items)
         {
-            Debug.Log(item._Weight);
+            int delta = _MaxWeight - _WeightAccumulation;
+            int totalItemWeight = (int) item.Details._Weight * item._Amount;
+
+            results[index]._Id = item.Details._Id;
+            results[index]._Quantity = item._Amount;
+
+            if (_WeightAccumulation + totalItemWeight <= _MaxWeight)
+            {
+                _WeightAccumulation += totalItemWeight;
+                results[index]._ItemsAdded = item._Amount;
+                AddItem(item.Details._Id, item._Amount);
+            }
+            else
+            {
+                int remainingCapacity = _MaxWeight - _WeightAccumulation;
+                int maxAddable = (int) (remainingCapacity / item.Details._Weight);
+                
+                if(maxAddable > 0)
+                {
+                    _WeightAccumulation += (int) (maxAddable * item.Details._Weight);
+                    results[index]._ItemsAdded = maxAddable;
+                    AddItem(item.Details._Id, maxAddable);
+                }
+                else
+                {
+                    results[index]._ItemsAdded = 0;
+                }
+            }
+            index++;
         }
 
-        return null;
+        return results;
     }
+
 }
 
 [Serializable]

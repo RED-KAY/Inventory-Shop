@@ -105,23 +105,54 @@ public class RandomDropSystem : GenericMonoSingleton<RandomDropSystem>
             Debug.Log("Dropped: " + droppedItem._Name + " (" + droppedItem._Rarity + ")");
         }
 
-        for (int i = 0; i < drop.Count; i++)
-        {
-            _ItemNames[i].text = drop[i]._Name;
-            _Rarities[i].text = drop[i]._Rarity.ToString();
-            _Statues[i].text = "added to Inventory";
-        }
+
 
         _Popup.SetActive(true);
+
+        Dictionary<string, int> itemsToAdd = new Dictionary<string, int>();
+        
+        for (int i = 0; i < _DroppedItems.Count; i++)
+        {
+            string k = _DroppedItems[i]._Id;
+            int v = 1;
+            if (itemsToAdd.ContainsKey(k))
+            {
+                itemsToAdd[k] += v;
+            }
+            else
+            {
+                itemsToAdd.Add(k, v);
+            }
+        }
+
+        ItemsAddInfo[] info = new ItemsAddInfo[itemsToAdd.Count];
+        int index = 0;
+        foreach (var item in itemsToAdd)
+        {
+            info[index]._Id = item.Key;
+            info[index]._Quantity = item.Value;
+            index++;
+        }
+
+        ItemsAddInfoResult[] itemsAddInfoResults = EventService.Instance._TryAddItems?.Invoke(info);
+        int flag = 0;
+        for (int i = 0; i < itemsAddInfoResults.Length; i++)
+        {
+            ItemsAddInfoResult result = itemsAddInfoResults[i];
+            for (int j = 0; j < result._Quantity; j++) {
+                _ItemNames[flag].text = GameController.Instance.AllItems[result._Id]._Name;
+                _Rarities[flag].text = GameController.Instance.AllItems[result._Id]._Rarity.ToString();
+                _Statues[flag].text = result._ItemsAdded > 0 ? "added to Inventory" : "cannot be added";
+                result._ItemsAdded--;
+                flag++;
+            }
+
+        }
     }
 
     public void Okay()
     {
-        List<ItemAddInfo> iai = new List<ItemAddInfo>();
-        for (int i = 0; i < _DroppedItems.Count; i++)
-        {
-            
-        }
+
         _Popup.SetActive(false);
     }
 }

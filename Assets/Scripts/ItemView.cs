@@ -9,6 +9,7 @@ public class ItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Image _Icon;
     public TextMeshProUGUI _Quantity;
     public Button _Button;
+    [SerializeField] GameObject _DisableIcon;
 
     private ItemEntry _ItemEntry;
     private int _Number;
@@ -54,5 +55,15 @@ public class ItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    
+    public void Disable()
+    {
+        _Button.interactable = false;
+        _DisableIcon.SetActive(true);
+    }
+
+    public void Enable()
+    {
+        _Button.interactable = true;
+        _DisableIcon.SetActive(false);
+    }
 }

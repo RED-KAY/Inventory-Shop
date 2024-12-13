@@ -17,6 +17,9 @@ public class EventService
 
     public EventController<int> _OnItemSoldAddMoney { get; private set; }
 
+    public EventController _OnItemsAddedToInventory { get; private set; }
+    public EventController _OnItemsRemovedToInventory { get; private set; }
+
     public EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]> _TryAddItems { get; private set; }
 
     public EventService()
@@ -25,6 +28,9 @@ public class EventService
         _OnItemSold = new EventController<string, int>();
 
         _OnItemSoldAddMoney = new EventController<int>();
+
+        _OnItemsAddedToInventory = new EventController();
+        _OnItemsRemovedToInventory = new EventController();
 
         _TryAddItems = new EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]>();
     }

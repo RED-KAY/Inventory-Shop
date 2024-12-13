@@ -36,7 +36,7 @@ public class GameController : GenericMonoSingleton<GameController>
         ShopModel model = new ShopModel(_AllItems);
         _ShopController = new ShopController(model, _ShopView);
 
-        InventoryModel inventoryModel = new InventoryModel(_AllItems);
+        InventoryModel inventoryModel = new InventoryModel(_AllItems, _MaxWeight);
         _InventoryController = new InventoryController(inventoryModel, _InventoryView);
 
         _ShopController.Initialize();
@@ -93,6 +93,14 @@ public class GameController : GenericMonoSingleton<GameController>
         return _InventoryController.CanSell(id, quantity);
     }
 
-    
+    public int GetMaxWeight()
+    {
+        return _InventoryController.MaxWeight();
+    }
+
+    public int GetWeightAccumulation()
+    {
+        return _InventoryController.WeightAccumulation();
+    }
 
 }

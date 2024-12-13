@@ -12,6 +12,7 @@ public class TooltipView : MonoBehaviour
     [SerializeField] Image _CoinIcon;
     [SerializeField] TextMeshProUGUI _SellingPrice;
     [SerializeField] TextMeshProUGUI _Rarity;
+    [SerializeField] TextMeshProUGUI _Weight;
 
     public void SetInfo(ItemEntry itemEntry, bool isShop = true, int number = 0)
     {
@@ -22,6 +23,7 @@ public class TooltipView : MonoBehaviour
         _PriceLabel.text = isShop ? "price: " : "quantity: ";
         _SellingPrice.text = itemEntry._SellingPrice.ToString();
         _Rarity.text = "rarity: " + itemEntry._Rarity.ToString();
+        _Weight.text = "weight: " + itemEntry._Weight.ToString();
 
         _CoinIcon.gameObject.SetActive(isShop);
     }

@@ -37,15 +37,15 @@ public class ItemPopupView : MonoBehaviour
             {
                 Debug.Log(_Quantity + " " + _ItemName + "(s) Bought!");
                 EventService.Instance._OnItemBought?.InvokeEvent(_Id, _Quantity);
-                ItemsAddInfo[] itemsToAdd = new ItemsAddInfo[1];
-                itemsToAdd[0]._Id = _Id;
-                itemsToAdd[0]._Quantity = _Quantity;
-                ItemsAddInfoResult[] result = EventService.Instance._TryAddItems?.Invoke(itemsToAdd);
+                //ItemsAddInfo[] itemsToAdd = new ItemsAddInfo[1];
+                //itemsToAdd[0]._Id = _Id;
+                //itemsToAdd[0]._Quantity = _Quantity;
+                //ItemsAddInfoResult[] result = EventService.Instance._TryAddItems?.Invoke(itemsToAdd);
 
-                if (result != null)
-                {
+                //if (result != null)
+                //{
                 
-                }
+                //}
             }
         }
 
@@ -86,6 +86,8 @@ public class ItemPopupView : MonoBehaviour
         _ItemName = itemName;
         _PriceOfOne = priceOfOne;
         _Quantity = quantity;
+        _Mode = mode;
+        _TotalPrice = _PriceOfOne * _Quantity;
 
         if (_Mode == 2) {
             _MaxQuantity = quantity;
@@ -94,9 +96,6 @@ public class ItemPopupView : MonoBehaviour
         {
             _MaxQuantity = 100;
         }
-        
-        _TotalPrice = _PriceOfOne * _Quantity;
-        _Mode = mode;
 
         Refresh();
 

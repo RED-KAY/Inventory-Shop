@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using TMPro;
 
 public class InventoryView : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class InventoryView : MonoBehaviour
 
     private InventoryController _Controller;
     int _CurrentActive;
+    [SerializeField] TextMeshProUGUI _WeightT;
+
+    bool initilized = false;
+
 
     private void Start()
     {
@@ -25,11 +30,21 @@ public class InventoryView : MonoBehaviour
         _Toggles[0].targetGraphic.color = _ActiveColor;
     }
 
+    private void Update()
+    {
+        if (initilized)
+        {
+            _WeightT.text = _Controller.WeightAccumulation().ToString() + "/" + _Controller.MaxWeight();
+        }
+    }
 
 
     public void SetController(InventoryController controller)
     {
         _Controller = controller;
+        _WeightT.text = _Controller.MaxWeight().ToString();
+
+        initilized = true;
     }
 
     public void Populate()

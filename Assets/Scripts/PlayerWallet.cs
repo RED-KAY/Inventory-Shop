@@ -16,6 +16,11 @@ public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
         EventService.Instance._OnItemSoldAddMoney.AddListener(AddMoney);
     }
 
+    private void OnDisable()
+    {
+        EventService.Instance._OnItemSoldAddMoney.RemoveListener(AddMoney);
+    }
+
     public void AddMoney(int amount)
     {
         _Balance += amount;
@@ -55,5 +60,7 @@ public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
     {
         _BalanceT.text = _Balance.ToString();
     }
+
+   
 }
 
