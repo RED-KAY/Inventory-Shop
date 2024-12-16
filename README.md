@@ -26,7 +26,10 @@
 1. Core Functionality
     - All the fundamental shop and inventory capabilities are fully implemented. These include buying, selling, and managing items.
 
-2. Quality of Life Improvements
+2. Random Drop System
+    - This system generates five random items based on their rarity. Rarer items have a lower probability of appearing and are available in limited quantities, while more common items have a higher probability and drop in greater numbers.
+
+3. Quality of Life Improvements
 
     1. Automatic Space Management: Items that cannot fit into the inventory due to limited space are automatically disabled, preventing clutter and confusion.
     2. Intelligent Item Placement: Newly acquired items from random drops are sorted by rarity first, then by weight, ensuring optimal organization.
