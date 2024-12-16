@@ -21,3 +21,7 @@
 
 5. UML Diagram
     - A detailed UML diagram illustrating the overall architecture is provided [here](https://app.diagrams.net/#G1Ys3kpttWdCPPyVSl0xiRSEvcZRAN9I1R#%7B%22pageId%22%3A%2276Zj12aouIvC6FJQ6CF7%22%7D) to help you visualize the system’s design.
+
+
+https://github.com/user-attachments/assets/4ead4438-4bbb-4dd3-a86b-584a081acef6
+
