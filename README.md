@@ -1,5 +1,6 @@
 # Introduction 
-    - This Unity C# project demonstrates how applying well-established software design patterns—specifically MVC, the Observer pattern, and the Service Locator—improves code organization and reduces coupling. Using a simple inventory and shop scenario, it illustrates disciplined architectural approaches that make projects more maintainable, scalable, and easier to understand.
+----------
+- This Unity C# project demonstrates how applying well-established software design patterns—specifically MVC, the Observer pattern, and the Service Locator—improves code organization and reduces coupling. Using a simple inventory and shop scenario, it illustrates disciplined architectural approaches that make projects more maintainable, scalable, and easier to understand.
 
 # Architecture
 ----------
