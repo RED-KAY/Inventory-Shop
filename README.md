@@ -22,6 +22,18 @@
 5. UML Diagram
     - A detailed UML diagram illustrating the overall architecture is provided [here](https://app.diagrams.net/#G1Ys3kpttWdCPPyVSl0xiRSEvcZRAN9I1R#%7B%22pageId%22%3A%2276Zj12aouIvC6FJQ6CF7%22%7D) to help you visualize the system’s design.
 
+# Features
+1. Core Functionality
+    - All the fundamental shop and inventory capabilities are fully implemented. These include buying, selling, and managing items.
 
+2. Quality of Life Improvements
+
+    1. Automatic Space Management: Items that cannot fit into the inventory due to limited space are automatically disabled, preventing clutter and confusion.
+    2. Intelligent Item Placement: Newly acquired items from random drops are sorted by rarity first, then by weight, ensuring optimal organization.
+    3. Filtering System: Users can filter items by type, making it easier to find and manage specific categories of items.
+
+Note: The current visual presentation prioritizes functionality over aesthetics. Future updates will focus on refining the UI/UX once the core architectural goals have been demonstrated.
+
+# Preview
 https://github.com/user-attachments/assets/4ead4438-4bbb-4dd3-a86b-584a081acef6
 
