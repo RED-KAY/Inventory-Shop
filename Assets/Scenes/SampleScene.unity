@@ -202,7 +202,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 173007997}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.4975623
+  m_Size: 0.772487
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8285,7 +8285,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.35
+  m_fontSize: 56.6
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9283,7 +9283,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 77779944}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.5234269
+  m_Size: 0.8116109
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10036,7 +10036,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 36.7
   m_fontSizeBase: 23.83
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10674,7 +10674,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 36.7
   m_fontSizeBase: 23.83
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11059,7 +11059,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.3
+  m_fontSize: 67.1
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
