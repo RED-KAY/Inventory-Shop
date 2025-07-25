@@ -5,65 +5,65 @@ using UnityEngine.UI;
 
 public class ItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Image _Rarity;
-    public Image _Icon;
-    public TextMeshProUGUI _Quantity;
-    public Button _Button;
-    [SerializeField] GameObject _DisableIcon;
+    public Image m_Rarity;
+    public Image m_Icon;
+    public TextMeshProUGUI m_Quantity;
+    public Button m_Button;
+    [SerializeField] GameObject m_DisableIcon;
 
-    private ItemEntry _ItemEntry;
-    private int _Number;
+    private ItemEntry m_ItemEntry;
+    private int m_Number;
 
-    bool _Hovering = false;
-    PointerEventData _PointerEventData;
+    bool m_Hovering = false;
+    PointerEventData m_PointerEventData;
 
-    bool _IsShop = false;
+    bool m_IsShop = false;
 
     public void SetItem(ItemEntry itemEntry, int num, bool isShop)
     {
-        _ItemEntry = itemEntry;
-        _Number = num;
-        _IsShop = isShop;
+        m_ItemEntry = itemEntry;
+        m_Number = num;
+        m_IsShop = isShop;
     }
 
     void Update()
     {
-        if (_Hovering && _PointerEventData != null)
+        if (m_Hovering && m_PointerEventData != null)
         {
-            GameController.Instance.SetTooltipPosition(_PointerEventData.position);
+            GameController.Instance.SetTooltipPosition(m_PointerEventData.position);
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!_Hovering)
+        if (!m_Hovering)
         {
-            GameController.Instance.SetInfoAndShowTooltip(_ItemEntry, _IsShop, _Number);
-            _PointerEventData = eventData;
-            _Hovering = true;
+            GameController.Instance.SetInfoAndShowTooltip(m_ItemEntry, m_IsShop, m_Number);
+            m_PointerEventData = eventData;
+            m_Hovering = true;
         }
 
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_Hovering == true)
+        if (m_Hovering == true)
         {
             GameController.Instance.HideTooltip();
-            _PointerEventData = null;
-            _Hovering = false;
+            m_PointerEventData = null;
+            m_Hovering = false;
         }
     }
 
     public void Disable()
     {
-        _Button.interactable = false;
-        _DisableIcon.SetActive(true);
+        m_Button.interactable = false;
+        m_DisableIcon.SetActive(true);
     }
 
     public void Enable()
     {
-        _Button.interactable = true;
-        _DisableIcon.SetActive(false);
+        m_Button.interactable = true;
+        m_DisableIcon.SetActive(false);
     }
 }

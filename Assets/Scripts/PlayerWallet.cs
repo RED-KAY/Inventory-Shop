@@ -3,35 +3,35 @@ using UnityEngine;
 
 public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
 {
-    [SerializeField] TextMeshProUGUI _BalanceT;
+    [SerializeField] TextMeshProUGUI m_BalanceT;
 
-    int _Balance;
+    int m_Balance;
 
-    public int Balance { get { return _Balance; } }
+    public int Balance { get { return m_Balance; } }
 
     private void Start()
     {
-        _Balance = 300;
+        m_Balance = 300;
 
-        EventService.Instance._OnItemSoldAddMoney.AddListener(AddMoney);
+        EventService.Instance.m_OnItemSoldAddMoney.AddListener(AddMoney);
     }
 
     private void OnDisable()
     {
-        EventService.Instance._OnItemSoldAddMoney.RemoveListener(AddMoney);
+        EventService.Instance.m_OnItemSoldAddMoney.RemoveListener(AddMoney);
     }
 
     public void AddMoney(int amount)
     {
-        _Balance += amount;
+        m_Balance += amount;
     }
 
     private void DeductMoney(int amount)
     {
-        _Balance -= amount;
+        m_Balance -= amount;
 
         if (Balance < 0) {
-            _Balance = 0;
+            m_Balance = 0;
         }
     }
 
@@ -58,7 +58,7 @@ public class PlayerWallet : GenericMonoSingleton<PlayerWallet>
 
     private void Update()
     {
-        _BalanceT.text = _Balance.ToString();
+        m_BalanceT.text = m_Balance.ToString();
     }
 
    

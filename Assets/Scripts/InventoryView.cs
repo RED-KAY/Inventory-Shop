@@ -6,68 +6,68 @@ using TMPro;
 
 public class InventoryView : MonoBehaviour
 {
-    [SerializeField] private GameObject _ItemUIPrefab;
-    [SerializeField] private Transform _InventoryContents;
-    [SerializeField] private ItemPopupView _ItemPopup;
-    [SerializeField] Toggle[] _Toggles;
-    [SerializeField] Color _DefaultColor;
-    [SerializeField] Color _ActiveColor;
+    [SerializeField] private GameObject m_ItemUIPrefab;
+    [SerializeField] private Transform m_InventoryContents;
+    [SerializeField] private ItemPopupView m_ItemPopup;
+    [SerializeField] Toggle[] m_Toggles;
+    [SerializeField] Color m_DefaultColor;
+    [SerializeField] Color m_ActiveColor;
 
-    private InventoryController _Controller;
-    int _CurrentActive;
-    [SerializeField] TextMeshProUGUI _WeightT;
+    private InventoryController m_Controller;
+    int m_CurrentActive;
+    [SerializeField] TextMeshProUGUI m_WeightT;
 
-    bool initilized = false;
+    bool m_Initilized = false;
 
 
     private void Start()
     {
-        foreach (var item in _Toggles)
+        foreach (var item in m_Toggles)
         {
-            item.targetGraphic.color = _DefaultColor;
+            item.targetGraphic.color = m_DefaultColor;
         }
 
-        _Toggles[0].targetGraphic.color = _ActiveColor;
+        m_Toggles[0].targetGraphic.color = m_ActiveColor;
     }
 
     private void Update()
     {
-        if (initilized)
+        if (m_Initilized)
         {
-            _WeightT.text = _Controller.WeightAccumulation().ToString() + "/" + _Controller.MaxWeight();
+            m_WeightT.text = m_Controller.WeightAccumulation().ToString() + "/" + m_Controller.MaxWeight();
         }
     }
 
 
     public void SetController(InventoryController controller)
     {
-        _Controller = controller;
-        _WeightT.text = _Controller.MaxWeight().ToString();
+        m_Controller = controller;
+        m_WeightT.text = m_Controller.MaxWeight().ToString();
 
-        initilized = true;
+        m_Initilized = true;
     }
 
     public void Populate()
     {
-        var itemsToDisplay = _Controller.GetItemsToDisplay();
+        var itemsToDisplay = m_Controller.GetItemsToDisplay();
         foreach (var item in itemsToDisplay)
         {
-            GameObject newItemGO = Instantiate(_ItemUIPrefab, _InventoryContents);
+            GameObject newItemGO = Instantiate(m_ItemUIPrefab, m_InventoryContents);
             ItemView newItem = newItemGO.GetComponent<ItemView>();
-            newItem._Button.onClick.AddListener(() => OnItemSelected(item.Value));
-            newItem._Icon.sprite = item.Value.Details._Icon;
-            newItem._Quantity.text = item.Value._Amount.ToString();
-            newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value.Details._Rarity)];
-            newItem.SetItem(item.Value.Details, item.Value._Amount, false);
+            newItem.m_Button.onClick.AddListener(() => OnItemSelected(item.Value));
+            newItem.m_Icon.sprite = item.Value.Details.m_Icon;
+            newItem.m_Quantity.text = item.Value.m_Amount.ToString();
+            newItem.m_Rarity.sprite = GameController.Instance.m_Rarities[((int)item.Value.Details.m_Rarity)];
+            newItem.SetItem(item.Value.Details, item.Value.m_Amount, false);
         }
 
     }
 
     public void Clear()
     {
-        for (int i = 0; i < _InventoryContents.childCount; i++)
+        for (int i = 0; i < m_InventoryContents.childCount; i++)
         {
-            Destroy(_InventoryContents.GetChild(i).gameObject);
+            Destroy(m_InventoryContents.GetChild(i).gameObject);
         }
     }
 
@@ -79,18 +79,18 @@ public class InventoryView : MonoBehaviour
 
     public void OnItemSelected(Item item)
     {
-        _ItemPopup?.Show(item.Details._Id, item.Details._Name, item.Details._SellingPrice, item._Amount, 2);
+        m_ItemPopup?.Show(item.Details.m_Id, item.Details.m_Name, item.Details.m_SellingPrice, item.m_Amount, 2);
     }
 
     public void ChangeFilter(int filter)
     {
-        if (_Controller == null) return;
+        if (m_Controller == null) return;
 
-        _Controller.FilterChanged(filter);
+        m_Controller.FilterChanged(filter);
 
-        _Toggles[_CurrentActive].targetGraphic.color = _DefaultColor;
-        _Toggles[filter].targetGraphic.color = _ActiveColor;
+        m_Toggles[m_CurrentActive].targetGraphic.color = m_DefaultColor;
+        m_Toggles[filter].targetGraphic.color = m_ActiveColor;
 
-        _CurrentActive = filter;
+        m_CurrentActive = filter;
     }
 }

@@ -3,28 +3,28 @@ using UnityEngine;
 
 public class GameController : GenericMonoSingleton<GameController>
 {
-    [SerializeField] private ShopView _ShopView;
-    ShopController _ShopController;
+    [SerializeField] private ShopView m_ShopView;
+    ShopController m_ShopController;
 
-    [SerializeField] private InventoryView _InventoryView;
-    InventoryController _InventoryController;
+    [SerializeField] private InventoryView m_InventoryView;
+    InventoryController m_InventoryController;
 
-    public Sprite[] _Rarities;
+    public Sprite[] m_Rarities;
 
-    Dictionary<string, ItemEntry> _AllItems;
-    List<ItemEntry> _ItemsList;
+    Dictionary<string, ItemEntry> m_AllItems;
+    List<ItemEntry> m_ItemsList;
 
-    public List<ItemEntry> ItemsList {  get { return _ItemsList; } }
+    public List<ItemEntry> ItemsList {  get { return m_ItemsList; } }
 
-    public Dictionary<string, ItemEntry> AllItems { get { return _AllItems; } }
+    public Dictionary<string, ItemEntry> AllItems { get { return m_AllItems; } }
 
-    [SerializeField] RectTransform _RectTransform;
-    [SerializeField] TooltipView _TooltipPrefab;
+    [SerializeField] RectTransform m_RectTransform;
+    [SerializeField] TooltipView m_TooltipPrefab;
 
-    private TooltipView _TooltipView;
-    public TooltipView TooltipView { get { return _TooltipView; } }
+    private TooltipView m_TooltipView;
+    public TooltipView TooltipView { get { return m_TooltipView; } }
 
-    [SerializeField] int _MaxWeight;
+    [SerializeField] int m_MaxWeight;
 
     private void Awake()
     {
@@ -33,34 +33,34 @@ public class GameController : GenericMonoSingleton<GameController>
         InitializeTooltip();
         LoadAllItems();
 
-        ShopModel model = new ShopModel(_AllItems);
-        _ShopController = new ShopController(model, _ShopView);
+        ShopModel model = new ShopModel(m_AllItems);
+        m_ShopController = new ShopController(model, m_ShopView);
 
-        InventoryModel inventoryModel = new InventoryModel(_AllItems, _MaxWeight);
-        _InventoryController = new InventoryController(inventoryModel, _InventoryView);
+        InventoryModel inventoryModel = new InventoryModel(m_AllItems, m_MaxWeight);
+        m_InventoryController = new InventoryController(inventoryModel, m_InventoryView);
 
-        _ShopController.Initialize();
-        _InventoryController.Initialize();
+        m_ShopController.Initialize();
+        m_InventoryController.Initialize();
 
         RandomDropSystem.Instance.Initiliaze();
     }
 
     public void LoadAllItems()
     {
-        _AllItems = new Dictionary<string, ItemEntry>();
-        _ItemsList = new List<ItemEntry>();
+        m_AllItems = new Dictionary<string, ItemEntry>();
+        m_ItemsList = new List<ItemEntry>();
 
         ItemEntry[] allItems = Resources.LoadAll<ItemEntry>("Items");
 
         foreach (ItemEntry item in allItems)
         {
-            _AllItems.Add(item._Id, item);
-            _ItemsList.Add(item);
+            m_AllItems.Add(item.m_Id, item);
+            m_ItemsList.Add(item);
         }
 
-        _ItemsList.Sort();
+        m_ItemsList.Sort();
 
-        foreach (KeyValuePair<string, ItemEntry> keyValuePair in _AllItems)
+        foreach (KeyValuePair<string, ItemEntry> keyValuePair in m_AllItems)
         {
             Debug.Log(keyValuePair.Key);
         }
@@ -68,7 +68,7 @@ public class GameController : GenericMonoSingleton<GameController>
 
     private void InitializeTooltip()
     {
-        _TooltipView = Instantiate(_TooltipPrefab, _RectTransform) as TooltipView;
+        m_TooltipView = Instantiate(m_TooltipPrefab, m_RectTransform) as TooltipView;
         HideTooltip();
     }
 
@@ -90,17 +90,17 @@ public class GameController : GenericMonoSingleton<GameController>
 
     public bool CanSell(string id, int quantity)
     {
-        return _InventoryController.CanSell(id, quantity);
+        return m_InventoryController.CanSell(id, quantity);
     }
 
     public int GetMaxWeight()
     {
-        return _InventoryController.MaxWeight();
+        return m_InventoryController.MaxWeight();
     }
 
     public int GetWeightAccumulation()
     {
-        return _InventoryController.WeightAccumulation();
+        return m_InventoryController.WeightAccumulation();
     }
 
 }

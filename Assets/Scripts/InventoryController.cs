@@ -5,60 +5,60 @@ using UnityEngine;
 
 public class InventoryController
 {
-    InventoryModel _Model;
-    InventoryView _View;
+    InventoryModel m_Model;
+    InventoryView m_View;
 
     public InventoryController(InventoryModel m, InventoryView v)
     {
-        _Model = m;
-        _View = v;
+        m_Model = m;
+        m_View = v;
     }
 
     ~InventoryController()
     {
-        EventService.Instance._OnItemBought.RemoveListener(OnItemsBought);
-        EventService.Instance._OnItemSold.RemoveListener(OnItemSold);
-        EventService.Instance._TryAddItems.RemoveListener(TryAddItems);
-        EventService.Instance._OnItemsAddedToInventory.RemoveListener(Refresh);
-        EventService.Instance._OnItemsRemovedToInventory.RemoveListener(Refresh);
+        EventService.Instance.m_OnItemBought.RemoveListener(OnItemsBought);
+        EventService.Instance.m_OnItemSold.RemoveListener(OnItemSold);
+        EventService.Instance.m_TryAddItems.RemoveListener(TryAddItems);
+        EventService.Instance.m_OnItemsAddedToInventory.RemoveListener(Refresh);
+        EventService.Instance.m_OnItemsRemovedToInventory.RemoveListener(Refresh);
     }
 
     public void Initialize()
     {
-        _Model.SetController(this);
-        _View.SetController(this);
+        m_Model.SetController(this);
+        m_View.SetController(this);
 
         PopulateShop();
 
-        EventService.Instance._OnItemBought.AddListener(OnItemsBought);
-        EventService.Instance._OnItemSold.AddListener(OnItemSold);
-        EventService.Instance._TryAddItems.AddListener(TryAddItems);
-        EventService.Instance._OnItemsAddedToInventory.AddListener(Refresh);
-        EventService.Instance._OnItemsRemovedToInventory.AddListener(Refresh);
+        EventService.Instance.m_OnItemBought.AddListener(OnItemsBought);
+        EventService.Instance.m_OnItemSold.AddListener(OnItemSold);
+        EventService.Instance.m_TryAddItems.AddListener(TryAddItems);
+        EventService.Instance.m_OnItemsAddedToInventory.AddListener(Refresh);
+        EventService.Instance.m_OnItemsRemovedToInventory.AddListener(Refresh);
     }
 
     public Dictionary<string, Item> GetAllItems()
     {
-        return _Model.Items;
+        return m_Model.Items;
     }
 
     public Dictionary<string, Item> GetItemsToDisplay()
     {
-        if (_Model._Filter <= 0 || _Model._Filter > 4)
+        if (m_Model.m_Filter <= 0 || m_Model.m_Filter > 4)
         {
-            _Model._Filter = 0;
+            m_Model.m_Filter = 0;
 
-            var filteredItems = _Model.Items.Values
-                .Where(item => item._Amount > 0)
-                    .ToDictionary(item => item.Details._Id, item => item);
+            var filteredItems = m_Model.Items.Values
+                .Where(item => item.m_Amount > 0)
+                    .ToDictionary(item => item.Details.m_Id, item => item);
 
             return filteredItems;
         }
         else
         {
-            var filteredItems = _Model.Items.Values
-                    .Where(item => item._Amount > 0 && item.Details._ItemType == (ItemType)_Model._Filter)
-                        .ToDictionary(item => item.Details._Id, item => item);
+            var filteredItems = m_Model.Items.Values
+                    .Where(item => item.m_Amount > 0 && item.Details.m_ItemType == (ItemType)m_Model.m_Filter)
+                        .ToDictionary(item => item.Details.m_Id, item => item);
             return filteredItems;
         }
     }
@@ -71,20 +71,19 @@ public class InventoryController
     private void OnItemsBought(string id, int quantity)
     {
         ItemsAddInfo[] itemsAddInfos = new ItemsAddInfo[1];
-        itemsAddInfos[0]._Id = id;
-        itemsAddInfos[0]._Quantity = quantity;
-        _Model.TryAddItems(itemsAddInfos);
-        //_Model.AddItem(id, quantity);
+        itemsAddInfos[0].m_Id = id;
+        itemsAddInfos[0].m_Quantity = quantity;
+        m_Model.TryAddItems(itemsAddInfos);
 
         Refresh();
     }
 
     private void OnItemSold(string id, int quantity) { 
     
-        _Model.RemoveItem(id, quantity);
+        m_Model.RemoveItem(id, quantity);
         Refresh();
 
-        EventService.Instance._OnItemSoldAddMoney?.InvokeEvent(quantity * _Model.Items[id].Details._SellingPrice);
+        EventService.Instance.m_OnItemSoldAddMoney?.InvokeEvent(quantity * m_Model.Items[id].Details.m_SellingPrice);
     }
 
     public void Buy(string id, int amount)
@@ -92,102 +91,102 @@ public class InventoryController
 
     }
 
-    ItemsAddInfoResult[] TryAddItems(ItemsAddInfo[] _itemsToAdd)
+    ItemsAddInfoResult[] TryAddItems(ItemsAddInfo[] itemsToAdd)
     {
-        return _Model.TryAddItems(_itemsToAdd);
+        return m_Model.TryAddItems(itemsToAdd);
     }
 
     public void PopulateShop()
     {
-        _View.Refresh();
+        m_View.Refresh();
     }
 
 
     public void Refresh()
     {
-        _View.Refresh();
+        m_View.Refresh();
     }
 
     internal void FilterChanged(int filter)
     {
-        _Model._Filter = filter;
+        m_Model.m_Filter = filter;
         PopulateShop();
     }
 
     public bool CanSell(string id, int quantity)
     {
-        return _Model.Items[id]._Amount >= quantity;
+        return m_Model.Items[id].m_Amount >= quantity;
     }
 
     public int MaxWeight()
     {
-        return _Model.MaxWeight;
+        return m_Model.MaxWeight;
     }
 
     public int WeightAccumulation()
     {
-        return _Model.WeightAccumulation;
+        return m_Model.WeightAccumulation;
     }
 }
 
 [Serializable]
 public class InventoryModel
 {
-    [SerializeField] private Dictionary<string, Item> _Items;
-    public Dictionary<string, Item> Items { get { return _Items; } }
-    private InventoryController _Controller;
-    public int _Filter = 0; //0: all, 1: materials, 2: weapons, 3: consumables, 4: trasures
-    private int _MaxWeight;
-    public int MaxWeight { get { return _MaxWeight; } }
+    [SerializeField] private Dictionary<string, Item> m_Items;
+    public Dictionary<string, Item> Items { get { return m_Items; } }
+    private InventoryController m_Controller;
+    public int m_Filter = 0; //0: all, 1: materials, 2: weapons, 3: consumables, 4: trasures
+    private int m_MaxWeight;
+    public int MaxWeight { get { return m_MaxWeight; } }
 
-    private int _WeightAccumulation = 0;
-    public int WeightAccumulation { get { return _WeightAccumulation; } }
+    private int m_WeightAccumulation = 0;
+    public int WeightAccumulation { get { return m_WeightAccumulation; } }
 
     public InventoryModel(Dictionary<string, ItemEntry> allItems, int maxWeight)
     {
-        _Items = new Dictionary<string, Item>();
+        m_Items = new Dictionary<string, Item>();
         foreach (var item in allItems) {
             Item i = new Item(item.Value, 0);
-            _Items.Add(item.Key, i);
+            m_Items.Add(item.Key, i);
         }
 
-        _MaxWeight = maxWeight;
+        m_MaxWeight = maxWeight;
     }
 
     public void SetController(InventoryController controller)
     {
-        _Controller = controller;
+        m_Controller = controller;
     }
 
     public void AddItem(string id, int quantity)
     {
         if (Items.ContainsKey(id))
         {
-            int newAmount = _Items[id]._Amount;
+            int newAmount = m_Items[id].m_Amount;
             newAmount += quantity;
-            _Items[id]._Amount = newAmount; 
+            m_Items[id].m_Amount = newAmount; 
         }
         else
         {
             Item i = new Item(GameController.Instance.AllItems[id], quantity);
-            _Items.Add(id, i);
+            m_Items.Add(id, i);
         }
 
-        EventService.Instance._OnItemsAddedToInventory?.InvokeEvent();
+        EventService.Instance.m_OnItemsAddedToInventory?.InvokeEvent();
     }
 
     public void RemoveItem(string id, int quantity) {
         if (Items.ContainsKey(id))
         {
-            int newAmount = _Items[id]._Amount;
+            int newAmount = m_Items[id].m_Amount;
             newAmount -= quantity;
             if (newAmount <= 0)
                 newAmount = 0;
-            _Items[id]._Amount = newAmount;
+            m_Items[id].m_Amount = newAmount;
 
-            _WeightAccumulation -= (int)_Items[id].Details._Weight * quantity;
+            m_WeightAccumulation -= (int)m_Items[id].Details.m_Weight * quantity;
 
-            EventService.Instance._OnItemsRemovedToInventory?.InvokeEvent();
+            EventService.Instance.m_OnItemsRemovedToInventory?.InvokeEvent();
         }
     }
 
@@ -197,15 +196,14 @@ public class InventoryModel
         Dictionary<ItemEntry, int> items2 = new Dictionary<ItemEntry, int>();
         foreach (var item in itemsToAdd)
         {
-            Item i = new Item(Items[item._Id].Details, item._Quantity);
+            Item i = new Item(Items[item.m_Id].Details, item.m_Quantity);
             items.Add(i);
-            //items2.Add(Items[item._Id].Details, item._Quantity);
         }
 
         items.Sort((a, b) =>
         {
-            if((a.Details._Weight * a._Amount) < (b.Details._Weight * b._Amount)) return -1;
-            else if((a.Details._Weight * a._Amount) > (b.Details._Weight * b._Amount)) return 1;
+            if((a.Details.m_Weight * a.m_Amount) < (b.Details.m_Weight * b.m_Amount)) return -1;
+            else if((a.Details.m_Weight * a.m_Amount) > (b.Details.m_Weight * b.m_Amount)) return 1;
             return 0;
         });
 
@@ -213,32 +211,32 @@ public class InventoryModel
         int index = 0;
         foreach (var item in items)
         {
-            int delta = _MaxWeight - _WeightAccumulation;
-            int totalItemWeight = (int) item.Details._Weight * item._Amount;
+            int delta = m_MaxWeight - m_WeightAccumulation;
+            int totalItemWeight = (int) item.Details.m_Weight * item.m_Amount;
 
-            results[index]._Id = item.Details._Id;
-            results[index]._Quantity = item._Amount;
+            results[index].m_Id = item.Details.m_Id;
+            results[index].m_Quantity = item.m_Amount;
 
-            if (_WeightAccumulation + totalItemWeight <= _MaxWeight)
+            if (m_WeightAccumulation + totalItemWeight <= m_MaxWeight)
             {
-                _WeightAccumulation += totalItemWeight;
-                results[index]._ItemsAdded = item._Amount;
-                AddItem(item.Details._Id, item._Amount);
+                m_WeightAccumulation += totalItemWeight;
+                results[index].m_ItemsAdded = item.m_Amount;
+                AddItem(item.Details.m_Id, item.m_Amount);
             }
             else
             {
-                int remainingCapacity = _MaxWeight - _WeightAccumulation;
-                int maxAddable = (int) (remainingCapacity / item.Details._Weight);
+                int remainingCapacity = m_MaxWeight - m_WeightAccumulation;
+                int maxAddable = (int) (remainingCapacity / item.Details.m_Weight);
                 
                 if(maxAddable > 0)
                 {
-                    _WeightAccumulation += (int) (maxAddable * item.Details._Weight);
-                    results[index]._ItemsAdded = maxAddable;
-                    AddItem(item.Details._Id, maxAddable);
+                    m_WeightAccumulation += (int) (maxAddable * item.Details.m_Weight);
+                    results[index].m_ItemsAdded = maxAddable;
+                    AddItem(item.Details.m_Id, maxAddable);
                 }
                 else
                 {
-                    results[index]._ItemsAdded = 0;
+                    results[index].m_ItemsAdded = 0;
                 }
             }
             index++;
@@ -252,15 +250,15 @@ public class InventoryModel
 [Serializable]
 public struct ItemsAddInfo
 {
-    public string _Id;
-    public int _Quantity;
+    public string m_Id;
+    public int m_Quantity;
 }
 
 [Serializable]
 public struct ItemsAddInfoResult
 {
-    public string _Id;
-    public int _Quantity;
-    public int _ItemsAdded;
-    public bool Success { get { return _Quantity == _ItemsAdded; } }
+    public string m_Id;
+    public int m_Quantity;
+    public int m_ItemsAdded;
+    public bool Success { get { return m_Quantity == m_ItemsAdded; } }
 }

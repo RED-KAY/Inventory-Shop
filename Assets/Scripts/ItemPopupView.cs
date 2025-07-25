@@ -3,29 +3,29 @@ using UnityEngine;
 
 public class ItemPopupView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _ItemNameT;
-    [SerializeField] private TextMeshProUGUI _PriceOfOneT;
-    [SerializeField] private TextMeshProUGUI _QuantityT;
-    [SerializeField] private TextMeshProUGUI _TotalPriceT;
+    [SerializeField] private TextMeshProUGUI m_ItemNameT;
+    [SerializeField] private TextMeshProUGUI m_PriceOfOneT;
+    [SerializeField] private TextMeshProUGUI m_QuantityT;
+    [SerializeField] private TextMeshProUGUI m_TotalPriceT;
 
-    [SerializeField] private TextMeshProUGUI _YesButtonT;
+    [SerializeField] private TextMeshProUGUI m_YesButtonT;
 
-    public int _Mode;
+    public int m_Mode;
 
-    string _Id;
-    string _ItemName;
-    int _PriceOfOne;
-    int _Quantity, _MaxQuantity;
-    int _TotalPrice;
+    string m_Id;
+    string m_ItemName;
+    int m_PriceOfOne;
+    int m_Quantity, m_MaxQuantity;
+    int m_TotalPrice;
 
     public void Yes()
     {
-        if (_Mode == 2)
+        if (m_Mode == 2)
         {
             //Sell
-            if (GameController.Instance.CanSell(_Id, _Quantity)) {
-                Debug.Log(_Quantity + " " + _ItemName + "(s) Sold!");
-                EventService.Instance._OnItemSold?.InvokeEvent(_Id, _Quantity);
+            if (GameController.Instance.CanSell(m_Id, m_Quantity)) {
+                Debug.Log(m_Quantity + " " + m_ItemName + "(s) Sold!");
+                EventService.Instance.m_OnItemSold?.InvokeEvent(m_Id, m_Quantity);
             }
 
         }
@@ -33,19 +33,10 @@ public class ItemPopupView : MonoBehaviour
         {
             //Buy
 
-            if (PlayerWallet.Instance.TryTransaction(_TotalPrice))
+            if (PlayerWallet.Instance.TryTransaction(m_TotalPrice))
             {
-                Debug.Log(_Quantity + " " + _ItemName + "(s) Bought!");
-                EventService.Instance._OnItemBought?.InvokeEvent(_Id, _Quantity);
-                //ItemsAddInfo[] itemsToAdd = new ItemsAddInfo[1];
-                //itemsToAdd[0]._Id = _Id;
-                //itemsToAdd[0]._Quantity = _Quantity;
-                //ItemsAddInfoResult[] result = EventService.Instance._TryAddItems?.Invoke(itemsToAdd);
-
-                //if (result != null)
-                //{
-                
-                //}
+                Debug.Log(m_Quantity + " " + m_ItemName + "(s) Bought!");
+                EventService.Instance.m_OnItemBought?.InvokeEvent(m_Id, m_Quantity);
             }
         }
 
@@ -59,11 +50,11 @@ public class ItemPopupView : MonoBehaviour
 
     public void Plus()
     {
-        _Quantity++;
+        m_Quantity++;
 
-        if(_Quantity > _MaxQuantity)
+        if(m_Quantity > m_MaxQuantity)
         {
-            _Quantity = _MaxQuantity;
+            m_Quantity = m_MaxQuantity;
         }
 
         Refresh();
@@ -71,10 +62,10 @@ public class ItemPopupView : MonoBehaviour
 
     public void Minus()
     {
-        _Quantity--;
+        m_Quantity--;
 
-        if (_Quantity < 1) { 
-            _Quantity = 1;
+        if (m_Quantity < 1) { 
+            m_Quantity = 1;
         }
 
         Refresh();
@@ -82,19 +73,19 @@ public class ItemPopupView : MonoBehaviour
 
     public void Show(string id, string itemName, int priceOfOne, int quantity = 1, int mode = 1)
     {
-        _Id = id;
-        _ItemName = itemName;
-        _PriceOfOne = priceOfOne;
-        _Quantity = quantity;
-        _Mode = mode;
-        _TotalPrice = _PriceOfOne * _Quantity;
+        m_Id = id;
+        m_ItemName = itemName;
+        m_PriceOfOne = priceOfOne;
+        m_Quantity = quantity;
+        m_Mode = mode;
+        m_TotalPrice = m_PriceOfOne * m_Quantity;
 
-        if (_Mode == 2) {
-            _MaxQuantity = quantity;
+        if (m_Mode == 2) {
+            m_MaxQuantity = quantity;
         }
         else
         {
-            _MaxQuantity = 100;
+            m_MaxQuantity = 100;
         }
 
         Refresh();
@@ -109,19 +100,19 @@ public class ItemPopupView : MonoBehaviour
 
     void Refresh()
     {
-        _TotalPrice = _Quantity * _PriceOfOne;
+        m_TotalPrice = m_Quantity * m_PriceOfOne;
 
-        _ItemNameT.text = _ItemName;
-        _PriceOfOneT.text = _PriceOfOne.ToString();
-        _QuantityT.text = _Quantity.ToString();
-        _TotalPriceT.text = _TotalPrice.ToString();
+        m_ItemNameT.text = m_ItemName;
+        m_PriceOfOneT.text = m_PriceOfOne.ToString();
+        m_QuantityT.text = m_Quantity.ToString();
+        m_TotalPriceT.text = m_TotalPrice.ToString();
 
 
-        if (_Mode == 2)
+        if (m_Mode == 2)
         {
-            _YesButtonT.text = "sell";
+            m_YesButtonT.text = "sell";
         }
         else
-            _YesButtonT.text = "buy";
+            m_YesButtonT.text = "buy";
     }
 }

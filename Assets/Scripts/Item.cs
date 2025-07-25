@@ -1,12 +1,12 @@
 public class Item 
 {
-    private ItemEntry _Details;
-    public ItemEntry Details { get { return _Details; } }
-    public int _Amount;
+    private ItemEntry m_Details;
+    public ItemEntry Details { get { return m_Details; } }
+    public int m_Amount;
 
-    public Item(ItemEntry details, int amount = 1)
+    public Item(ItemEntry m_Details, int m_Amount = 1)
     {
-        _Details = details; 
-        _Amount = amount;
+        this.m_Details = m_Details; 
+        this.m_Amount = m_Amount;
     }
 }

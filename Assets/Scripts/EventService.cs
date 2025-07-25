@@ -1,37 +1,37 @@
 public class EventService
 {
-    private static EventService instance;
+    private static EventService m_Instance;
     public static EventService Instance {
         get {
-            if (instance == null)
+            if (m_Instance == null)
             {
-                instance = new EventService();
+                m_Instance = new EventService();
             }
-            return instance;
+            return m_Instance;
         }
     }
 
-    public EventController<string, int> _OnItemBought { get; private set; }
+    public EventController<string, int> m_OnItemBought { get; private set; }
 
-    public EventController<string, int> _OnItemSold { get; private set; }
+    public EventController<string, int> m_OnItemSold { get; private set; }
 
-    public EventController<int> _OnItemSoldAddMoney { get; private set; }
+    public EventController<int> m_OnItemSoldAddMoney { get; private set; }
 
-    public EventController _OnItemsAddedToInventory { get; private set; }
-    public EventController _OnItemsRemovedToInventory { get; private set; }
+    public EventController m_OnItemsAddedToInventory { get; private set; }
+    public EventController m_OnItemsRemovedToInventory { get; private set; }
 
-    public EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]> _TryAddItems { get; private set; }
+    public EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]> m_TryAddItems { get; private set; }
 
     public EventService()
     {
-        _OnItemBought = new EventController<string, int>();
-        _OnItemSold = new EventController<string, int>();
+        m_OnItemBought = new EventController<string, int>();
+        m_OnItemSold = new EventController<string, int>();
 
-        _OnItemSoldAddMoney = new EventController<int>();
+        m_OnItemSoldAddMoney = new EventController<int>();
 
-        _OnItemsAddedToInventory = new EventController();
-        _OnItemsRemovedToInventory = new EventController();
+        m_OnItemsAddedToInventory = new EventController();
+        m_OnItemsRemovedToInventory = new EventController();
 
-        _TryAddItems = new EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]>();
+        m_TryAddItems = new EventControllerFunc<ItemsAddInfo[], ItemsAddInfoResult[]>();
     }
 }

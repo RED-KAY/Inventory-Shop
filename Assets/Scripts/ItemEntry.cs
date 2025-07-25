@@ -21,25 +21,25 @@ public enum Rarity
 [CreateAssetMenu(fileName = "New Item", menuName ="Item")]
 public class ItemEntry : ScriptableObject, IComparable
 {
-    public string _Id;
-    public string _Name;
-    public string _Description;
-    public Sprite _Icon;
-    public ItemType _ItemType;
-    public Rarity _Rarity;
-    public float _Weight;
-    public int _Price;
-    public int _SellingPrice;
+    public string m_Id;
+    public string m_Name;
+    public string m_Description;
+    public Sprite m_Icon;
+    public ItemType m_ItemType;
+    public Rarity m_Rarity;
+    public float m_Weight;
+    public int m_Price;
+    public int m_SellingPrice;
 
     public int CompareTo(object obj)
     {
         var a = this;
         var b = obj as ItemEntry;
 
-        if(((int)a._Rarity) > ((int)b._Rarity))
+        if(((int)a.m_Rarity) > ((int)b.m_Rarity))
         {
             return 1;
-        }else if(((int)a._Rarity) < ((int)b._Rarity))
+        }else if(((int)a.m_Rarity) < ((int)b.m_Rarity))
         {
             return -1;
         }

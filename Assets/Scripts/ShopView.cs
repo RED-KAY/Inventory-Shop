@@ -6,52 +6,52 @@ using UnityEngine.UI;
 
 public class ShopView : MonoBehaviour
 {
-    [SerializeField] private GameObject _ItemUIPrefab;
-    [SerializeField] private Transform _ShopContents;
-    [SerializeField] private ItemPopupView _ItemPopup;
-    [SerializeField] Toggle[] _Toggles;
-    [SerializeField] Color _DefaultColor;
-    [SerializeField] Color _ActiveColor;
+    [SerializeField] private GameObject m_ItemUIPrefab;
+    [SerializeField] private Transform m_ShopContents;
+    [SerializeField] private ItemPopupView m_ItemPopup;
+    [SerializeField] Toggle[] m_Toggles;
+    [SerializeField] Color m_DefaultColor;
+    [SerializeField] Color m_ActiveColor;
     Button b;
 
-    private ShopController _Controller;
-    int _CurrentActive;
+    private ShopController m_Controller;
+    int m_CurrentActive;
 
     private void Start()
     {
-        foreach (var item in _Toggles)
+        foreach (var item in m_Toggles)
         {
-            item.targetGraphic.color = _DefaultColor;
+            item.targetGraphic.color = m_DefaultColor;
         }
-        _Toggles[0].targetGraphic.color = _ActiveColor;
+        m_Toggles[0].targetGraphic.color = m_ActiveColor;
     }
 
     public void SetController(ShopController controller)
     {
-        _Controller = controller;
+        m_Controller = controller;
 
-        EventService.Instance._OnItemsAddedToInventory.AddListener(Refresh);
-        EventService.Instance._OnItemsRemovedToInventory.AddListener(Refresh);
+        EventService.Instance.m_OnItemsAddedToInventory.AddListener(Refresh);
+        EventService.Instance.m_OnItemsRemovedToInventory.AddListener(Refresh);
     }
 
     public void Populate()
     {
-        var itemsToDisplay = _Controller.GetItemsToDisplay();
+        var itemsToDisplay = m_Controller.GetItemsToDisplay();
         int maxWeight = GameController.Instance.GetMaxWeight();
         int weightAccumulation = GameController.Instance.GetWeightAccumulation();
         int delta = maxWeight - weightAccumulation;
 
         foreach (var item in itemsToDisplay)
         {
-            GameObject newItemGO = Instantiate(_ItemUIPrefab, _ShopContents);
+            GameObject newItemGO = Instantiate(m_ItemUIPrefab, m_ShopContents);
             ItemView newItem = newItemGO.GetComponent<ItemView>();
-            newItem._Button.onClick.AddListener(() => OnItemSelected(item.Value));
-            newItem._Icon.sprite = item.Value._Icon;
-            newItem._Quantity.text = "$" + item.Value._Price.ToString();
-            newItem._Rarity.sprite = GameController.Instance._Rarities[((int)item.Value._Rarity)];
-            newItem.SetItem(item.Value, item.Value._Price, true);
+            newItem.m_Button.onClick.AddListener(() => OnItemSelected(item.Value));
+            newItem.m_Icon.sprite = item.Value.m_Icon;
+            newItem.m_Quantity.text = "$" + item.Value.m_Price.ToString();
+            newItem.m_Rarity.sprite = GameController.Instance.m_Rarities[((int)item.Value.m_Rarity)];
+            newItem.SetItem(item.Value, item.Value.m_Price, true);
 
-            if (delta < item.Value._Weight) { 
+            if (delta < item.Value.m_Weight) { 
                 newItem.Disable();
             }
         }
@@ -60,9 +60,9 @@ public class ShopView : MonoBehaviour
 
     public void Clear()
     {
-        for (int i = 0; i < _ShopContents.childCount; i++)
+        for (int i = 0; i < m_ShopContents.childCount; i++)
         {
-            Destroy(_ShopContents.GetChild(i).gameObject);
+            Destroy(m_ShopContents.GetChild(i).gameObject);
         }
     }
 
@@ -74,23 +74,23 @@ public class ShopView : MonoBehaviour
 
     public void OnItemSelected(ItemEntry item)
     {
-        _ItemPopup?.Show(item._Id, item._Name, item._Price);
+        m_ItemPopup?.Show(item.m_Id, item.m_Name, item.m_Price);
     }
 
     public void ChangeFilter(int filter)
     {
-        if(_Controller == null) return;
-        _Controller.FilterChanged(filter);
+        if(m_Controller == null) return;
+        m_Controller.FilterChanged(filter);
 
-        _Toggles[_CurrentActive].targetGraphic.color = _DefaultColor;
-        _Toggles[filter].targetGraphic.color = _ActiveColor;
+        m_Toggles[m_CurrentActive].targetGraphic.color = m_DefaultColor;
+        m_Toggles[filter].targetGraphic.color = m_ActiveColor;
 
-        _CurrentActive = filter;
+        m_CurrentActive = filter;
     }
 
     private void OnDisable()
     {
-        EventService.Instance._OnItemsAddedToInventory.RemoveListener(Refresh);
-        EventService.Instance._OnItemsRemovedToInventory.RemoveListener(Refresh);
+        EventService.Instance.m_OnItemsAddedToInventory.RemoveListener(Refresh);
+        EventService.Instance.m_OnItemsRemovedToInventory.RemoveListener(Refresh);
     }
 }

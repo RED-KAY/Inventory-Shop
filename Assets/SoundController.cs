@@ -2,37 +2,37 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-[RequireComponent (typeof(AudioSource))]
+[RequireComponent(typeof(AudioSource))]
 public class SoundController : GenericMonoSingleton<SoundController>
 {
-    [SerializeField] AudioClip _BuyingSFX;
-    [SerializeField] AudioClip _SellingSFX;
+    [SerializeField] AudioClip m_BuyingSFX;
+    [SerializeField] AudioClip m_SellingSFX;
 
-    AudioSource _Source;
+    AudioSource m_Source;
 
     private void Start()
     {
-        _Source = GetComponent<AudioSource> ();
+        m_Source = GetComponent<AudioSource>();
 
-        EventService.Instance._OnItemBought.AddListener(PlayBuyingSFX);
-        EventService.Instance._OnItemSold.AddListener(PlaySellingSFX);
+        EventService.Instance.m_OnItemBought.AddListener(PlayBuyingSFX);
+        EventService.Instance.m_OnItemSold.AddListener(PlaySellingSFX);
     }
 
     private void PlayBuyingSFX(string arg1, int arg2)
     {
-        _Source.clip = _BuyingSFX;
-        _Source.Play();
+        m_Source.clip = m_BuyingSFX;
+        m_Source.Play();
     }
 
     void PlaySellingSFX(string arg1, int arg2)
     {
-        _Source.clip = _SellingSFX;
-        _Source.Play();
+        m_Source.clip = m_SellingSFX;
+        m_Source.Play();
     }
 
     private void OnDisable()
     {
-        EventService.Instance._OnItemBought.RemoveListener(PlayBuyingSFX);
-        EventService.Instance._OnItemSold.RemoveListener(PlaySellingSFX);
+        EventService.Instance.m_OnItemBought.RemoveListener(PlayBuyingSFX);
+        EventService.Instance.m_OnItemSold.RemoveListener(PlaySellingSFX);
     }
 }

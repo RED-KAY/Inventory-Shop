@@ -4,27 +4,27 @@ using UnityEngine.UI;
 
 public class TooltipView : MonoBehaviour
 {
-    [SerializeField] Image _Icon;
-    [SerializeField] TextMeshProUGUI _Name;
-    [SerializeField] TextMeshProUGUI _Description;
-    [SerializeField] TextMeshProUGUI _Price;
-    [SerializeField] TextMeshProUGUI _PriceLabel;
-    [SerializeField] Image _CoinIcon;
-    [SerializeField] TextMeshProUGUI _SellingPrice;
-    [SerializeField] TextMeshProUGUI _Rarity;
-    [SerializeField] TextMeshProUGUI _Weight;
+    [SerializeField] Image m_Icon;
+    [SerializeField] TextMeshProUGUI m_Name;
+    [SerializeField] TextMeshProUGUI m_Description;
+    [SerializeField] TextMeshProUGUI m_Price;
+    [SerializeField] TextMeshProUGUI m_PriceLabel;
+    [SerializeField] Image m_CoinIcon;
+    [SerializeField] TextMeshProUGUI m_SellingPrice;
+    [SerializeField] TextMeshProUGUI m_Rarity;
+    [SerializeField] TextMeshProUGUI m_Weight;
 
     public void SetInfo(ItemEntry itemEntry, bool isShop = true, int number = 0)
     {
-        _Icon.sprite = itemEntry._Icon;
-        _Name.text = itemEntry._Name;
-        _Description.text = itemEntry._Description;
-        _Price.text = isShop ? itemEntry._Price.ToString() : number.ToString();
-        _PriceLabel.text = isShop ? "price: " : "quantity: ";
-        _SellingPrice.text = itemEntry._SellingPrice.ToString();
-        _Rarity.text = "rarity: " + itemEntry._Rarity.ToString();
-        _Weight.text = "weight: " + itemEntry._Weight.ToString();
+        m_Icon.sprite = itemEntry.m_Icon;
+        m_Name.text = itemEntry.m_Name;
+        m_Description.text = itemEntry.m_Description;
+        m_Price.text = isShop ? itemEntry.m_Price.ToString() : number.ToString();
+        m_PriceLabel.text = isShop ? "price: " : "quantity: ";
+        m_SellingPrice.text = itemEntry.m_SellingPrice.ToString();
+        m_Rarity.text = "rarity: " + itemEntry.m_Rarity.ToString();
+        m_Weight.text = "weight: " + itemEntry.m_Weight.ToString();
 
-        _CoinIcon.gameObject.SetActive(isShop);
+        m_CoinIcon.gameObject.SetActive(isShop);
     }
 }
