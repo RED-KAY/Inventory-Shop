@@ -1301,15 +1301,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fcee60bb7045444bb6967e755e9d04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Icon: {fileID: 6497459203388933523}
-  _Name: {fileID: 9016116092262167446}
-  _Description: {fileID: 1145279489482098299}
-  _Price: {fileID: 6716384950396169667}
-  _PriceLabel: {fileID: 6385619473102710608}
-  _CoinIcon: {fileID: 7159650440336853960}
-  _SellingPrice: {fileID: 689844771727612475}
-  _Rarity: {fileID: 3942903406263399622}
-  _Weight: {fileID: 8832959540232877930}
+  m_Icon: {fileID: 6497459203388933523}
+  m_NameT: {fileID: 9016116092262167446}
+  m_Description: {fileID: 1145279489482098299}
+  m_Price: {fileID: 6716384950396169667}
+  m_PriceLabel: {fileID: 6385619473102710608}
+  m_CoinIcon: {fileID: 7159650440336853960}
+  m_SellingPrice: {fileID: 689844771727612475}
+  m_Rarity: {fileID: 3942903406263399622}
+  m_Weight: {fileID: 8832959540232877930}
 --- !u!1 &8467056936890164951
 GameObject:
   m_ObjectHideFlags: 0

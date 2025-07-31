@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class TooltipView : MonoBehaviour
 {
     [SerializeField] Image m_Icon;
-    [SerializeField] TextMeshProUGUI m_Name;
+    [SerializeField] TextMeshProUGUI m_NameT;
     [SerializeField] TextMeshProUGUI m_Description;
     [SerializeField] TextMeshProUGUI m_Price;
     [SerializeField] TextMeshProUGUI m_PriceLabel;
@@ -17,7 +17,7 @@ public class TooltipView : MonoBehaviour
     public void SetInfo(ItemEntry itemEntry, bool isShop = true, int number = 0)
     {
         m_Icon.sprite = itemEntry.m_Icon;
-        m_Name.text = itemEntry.m_Name;
+        m_NameT.text = itemEntry.m_Name;
         m_Description.text = itemEntry.m_Description;
         m_Price.text = isShop ? itemEntry.m_Price.ToString() : number.ToString();
         m_PriceLabel.text = isShop ? "price: " : "quantity: ";

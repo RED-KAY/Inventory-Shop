@@ -438,11 +438,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2601f978ac2260a48b6f19ee06fd0f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Rarity: {fileID: 470061712799206718}
-  _Icon: {fileID: 1829334082860085776}
-  _Quantity: {fileID: 532168425030645671}
-  _Button: {fileID: 1981174407454985939}
-  _DisableIcon: {fileID: 3709735250342302239}
+  m_Rarity: {fileID: 470061712799206718}
+  m_Icon: {fileID: 1829334082860085776}
+  m_Quantity: {fileID: 532168425030645671}
+  m_Button: {fileID: 1981174407454985939}
+  m_DisableIcon: {fileID: 3709735250342302239}
 --- !u!1 &4691578040891377599
 GameObject:
   m_ObjectHideFlags: 0
