@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da6b3e841908a14fad4172ca964a1b6, type: 3}
   m_Name: banana
   m_EditorClassIdentifier: 
-  _Id: banana
-  _Name: Banana
-  _Description: A tropical fruit.
-  _Icon: {fileID: 21300000, guid: 2f0848046b1f02641a5d6480ebc06277, type: 3}
-  _ItemType: 1
-  _Rarity: 0
-  _Weight: 1
-  _Price: 5
-  _SellingPrice: 2
+  m_Id: banana
+  m_Name: banana
+  m_Description: A tropical fruit.
+  m_Icon: {fileID: 21300000, guid: 2f0848046b1f02641a5d6480ebc06277, type: 3}
+  m_ItemType: 1
+  m_Rarity: 0
+  m_Weight: 1
+  m_Price: 5
+  m_SellingPrice: 2
